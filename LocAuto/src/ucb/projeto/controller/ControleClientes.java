@@ -1,7 +1,11 @@
 package ucb.projeto.controller;
 
+import ucb.projeto.model.Cliente;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class ControleClientes extends ControlePessoa {
 
@@ -76,7 +80,7 @@ public class ControleClientes extends ControlePessoa {
     }
 
 
-    public ResultSet listarClientes() throws SQLException {
+    public ArrayList<Cliente> listarClientes() throws SQLException {
         String sql = """
             SELECT
                 c.Fk_ID_Pessoa,
@@ -95,7 +99,44 @@ public class ControleClientes extends ControlePessoa {
             FROM tb_Cliente c
             JOIN tb_Pessoa p ON p.ID_Pessoa = c.Fk_ID_Pessoa;
             """;
-        return controleBancoDeDados.executarCusultaBD(sql);
+        ResultSet resultado = controleBancoDeDados.executarCusultaBD(sql);
+
+        ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+
+        if (!resultado.next()) {
+            return clientes;
+        }
+
+        do {
+            int idCliente = resultado.getInt("ID_Cliente");
+            int id        = resultado.getInt("ID_Pessoa");
+            String cpf    = resultado.getString("CPF");
+            String nome   = resultado.getString("Nome");
+            Date dataNascimento = resultado.getDate("Data_nasc");
+
+            String municipio = resultado.getString("Municipio");
+            String uf        = resultado.getString("UF");
+            String cep       = resultado.getString("CEP");
+            String compl     = resultado.getString("Complemento");
+            String email     = resultado.getString("Email");
+
+            String endereco = String.format("%s/%s, CEP %s%s", municipio, uf, cep, (compl != null && !compl.isBlank() ? " - " + compl : ""));
+
+            Cliente cliente = new Cliente(
+                    idCliente,
+                    id,
+                    cpf,
+                    nome,
+                    dataNascimento,
+                    endereco,
+                    email
+            );
+
+            clientes.add(cliente);
+        } while (resultado.next());
+
+        resultado.close();
+        return clientes;
     }
 
     public ResultSet buscarPorCPF(String cpf) throws SQLException {

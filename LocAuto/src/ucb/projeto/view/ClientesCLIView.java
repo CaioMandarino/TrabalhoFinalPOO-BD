@@ -1,9 +1,11 @@
 package ucb.projeto.view;
 
 import ucb.projeto.controller.ControleClientes;
+import ucb.projeto.model.Cliente;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ClientesCLIView {
@@ -49,16 +51,16 @@ public class ClientesCLIView {
 
     private void criarCliente() throws SQLException {
         System.out.println("\n== Criar cliente ==");
-        String cpf = ask("CPF (obrigatório): ");
-        String nome = ask("Nome (obrigatório): ");
-        String dataNasc = askOpt("Data nasc (yyyy-MM-dd, opcional): ");
-        String cep = askOpt("CEP (opcional): ");
-        String municipio = askOpt("Município (opcional): ");
-        String uf = askOpt("UF (2 chars, opcional): ");
-        String complemento = askOpt("Complemento (opcional): ");
-        String email = askOpt("Email (opcional): ");
-        String tel1 = askOpt("Telefone1 (opcional): ");
-        String tel2 = askOpt("Telefone2 (opcional): ");
+        String cpf = pedirObrigatorio("CPF (obrigatório): ");
+        String nome = pedirObrigatorio("Nome (obrigatório): ");
+        String dataNasc = pedirOpcional("Data nasc (yyyy-MM-dd, opcional): ");
+        String cep = pedirOpcional("CEP (opcional): ");
+        String municipio = pedirOpcional("Município (opcional): ");
+        String uf = pedirOpcional("UF (2 chars, opcional): ");
+        String complemento = pedirOpcional("Complemento (opcional): ");
+        String email = pedirOpcional("Email (opcional): ");
+        String tel1 = pedirOpcional("Telefone1 (opcional): ");
+        String tel2 = pedirOpcional("Telefone2 (opcional): ");
 
         controle.inserirCliente(cpf, nome, dataNasc, cep, municipio, uf, complemento, email, tel1, tel2);
         System.out.println("Cliente criado com sucesso.");
@@ -66,7 +68,7 @@ public class ClientesCLIView {
 
     private void buscarPorCPF() throws SQLException {
         System.out.println("\n== Buscar por CPF ==");
-        String cpf = ask("CPF: ");
+        String cpf = pedirObrigatorio("CPF: ");
 
         ResultSet resultado = controle.buscarPorCPF(cpf);
 
@@ -75,7 +77,7 @@ public class ClientesCLIView {
             return;
         }
         do {
-            printRow(resultado);
+            printLinha(resultado);
         } while (resultado.next());
 
         resultado.close();
@@ -83,16 +85,16 @@ public class ClientesCLIView {
 
     private void atualizarPorCPF() throws SQLException {
         System.out.println("\n== Atualizar por CPF ==");
-        String cpf        = ask("CPF do cliente a atualizar: ");
-        String nome       = ask("Novo Nome: ");
-        String dataNasc   = askOpt("Data nasc yyyy-MM-dd (vazio = NULL): ");
-        String cep        = askOpt("CEP (vazio = NULL): ");
-        String municipio  = askOpt("Município (vazio = NULL): ");
-        String uf         = askOpt("UF (vazio = NULL): ");
-        String complemento= askOpt("Complemento (vazio = NULL): ");
-        String email      = askOpt("Email (vazio = NULL): ");
-        String tel1       = askOpt("Telefone1 (vazio = NULL): ");
-        String tel2       = askOpt("Telefone2 (vazio = NULL): ");
+        String cpf        = pedirObrigatorio("CPF do cliente a atualizar: ");
+        String nome       = pedirObrigatorio("Novo Nome: ");
+        String dataNasc   = pedirOpcional("Data nasc yyyy-MM-dd (vazio = NULL): ");
+        String cep        = pedirOpcional("CEP (vazio = NULL): ");
+        String municipio  = pedirOpcional("Município (vazio = NULL): ");
+        String uf         = pedirOpcional("UF (vazio = NULL): ");
+        String complemento= pedirOpcional("Complemento (vazio = NULL): ");
+        String email      = pedirOpcional("Email (vazio = NULL): ");
+        String tel1       = pedirOpcional("Telefone1 (vazio = NULL): ");
+        String tel2       = pedirOpcional("Telefone2 (vazio = NULL): ");
 
         controle.atualizarCliente(cpf,
                 convertaParaNULLSePrecisar(nome),
@@ -110,32 +112,30 @@ public class ClientesCLIView {
 
     private void deletarPorCPF() throws SQLException {
         System.out.println("\n== Deletar por CPF ==");
-        String cpf = ask("CPF: ");
+        String cpf = pedirObrigatorio("CPF: ");
         controle.deletarCliente(cpf);
         System.out.println("Cliente deletado.");
     }
 
     private void listarTodos() throws SQLException {
         System.out.println("\n== Lista de clientes ==");
-        ResultSet resultado = controle.listarClientes();
+        ArrayList<Cliente> clientes = controle.listarClientes();
 
-        if (!resultado.next()) {
+        if (clientes.isEmpty()) {
             System.out.println("Nenhum cliente encontrado.");
             return;
         }
 
-        do {
-            printRow(resultado);
-        } while (resultado.next());
-
-        resultado.close();
+        for (Cliente cliente: clientes) {
+            System.out.println(cliente.verCliente());
+        }
     }
 
     private static String convertaParaNULLSePrecisar(String valor) {
         return (valor == null || valor.isBlank()) ? null : valor;
     }
 
-    private String ask(String label) {
+    private String pedirObrigatorio(String label) {
         while (true) {
             System.out.print(label);
             String valor = scanner.nextLine();
@@ -146,13 +146,13 @@ public class ClientesCLIView {
         }
     }
 
-    private String askOpt(String label) {
+    private String pedirOpcional(String label) {
         System.out.print(label);
         String valor = scanner.nextLine();
         return (valor == null || valor.isBlank()) ? null : valor;
     }
 
-    private void printRow(ResultSet resultado) throws SQLException {
+    private void printLinha(ResultSet resultado) throws SQLException {
         System.out.printf(
                 "ID_Cliente=%d, FK=%d, CPF=%s, Nome=%s, Data_nasc=%s, CEP=%s, Municipio=%s, UF=%s, Comp=%s, Email=%s, Tel1=%s, Tel2=%s%n",
                 resultado.getInt("ID_Cliente"),
