@@ -1,6 +1,5 @@
 package ucb.projeto.view;
 
-import ucb.projeto.controller.ControleBancoDeDados;
 import ucb.projeto.controller.ControleClientes;
 
 import java.sql.ResultSet;
@@ -17,7 +16,7 @@ public class ClientesCLIView {
         this.scanner = scanner;
     }
 
-    public void run() {
+    public void rodar() {
         while (true) {
             System.out.println("\n=== Menu Clientes ===");
             System.out.println("1) Criar cliente");
