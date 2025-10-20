@@ -87,4 +87,18 @@ public class Carro {
                 ", Nome='" + Nome + '\'' +
                 '}';
     }
+    public String verCarro() {
+        return String.format(
+                "ID: %d%n" +
+                        "Placa: %s%n" +
+                        "Quilometragem: %.2f km%n" +
+                        "Cor: %s%n" +
+                        "Status: %s%n" +
+                        "Ano de Fabricação: %d%n" +
+                        "Nome: %s%n" +
+                        "-----------------------------",
+                Id_Carro, placa, Quilometragem, Cor, Status, AnoFabricacao, Nome
+        );
+    }
+
 }

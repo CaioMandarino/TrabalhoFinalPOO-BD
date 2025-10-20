@@ -27,7 +27,7 @@ public class ControleClientes extends ControlePessoa {
     ) throws SQLException  {
         inserirPessoa(cpf, nome, data_nasc, cep, municipio, uf, complemento, email, telefone1, telefone2);
         String sql = String.format("SELECT * FROM tb_Pessoa WHERE CPF = '%s';", cpf);
-        ResultSet resultado = controleBancoDeDados.executarCusultaBD(sql);
+        ResultSet resultado = controleBancoDeDados.executarConsultaBD(sql);
 
         if (!resultado.next()) {
             System.out.println("Error ao associar pessoa a cliente");
@@ -99,7 +99,7 @@ public class ControleClientes extends ControlePessoa {
             FROM tb_Cliente c
             JOIN tb_Pessoa p ON p.ID_Pessoa = c.Fk_ID_Pessoa;
             """;
-        ResultSet resultado = controleBancoDeDados.executarCusultaBD(sql);
+        ResultSet resultado = controleBancoDeDados.executarConsultaBD(sql);
 
         ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 
@@ -160,6 +160,6 @@ public class ControleClientes extends ControlePessoa {
         WHERE p.CPF = %s;
         """, sqlValorValido(cpf));
 
-        return controleBancoDeDados.executarCusultaBD(sql);
+        return controleBancoDeDados.executarConsultaBD(sql);
     }
 }
