@@ -16,19 +16,6 @@ create table if not exists tb_pessoa(
     telefone2 double
 );
 
-create table if not exists tb_modelo_carro(
-    id_modelo_carro int primary key auto_increment,
-    marca varchar(255) not null,
-    categoria varchar(255) not null,
-    plataforma varchar(255) not null
-);
-
-create table if not exists tb_seguradora(
-    id_seguradora int primary key auto_increment,
-    cnpj varchar(14) not null,
-    razao_social varchar(255)
-);
-
 create table if not exists tb_cliente(
     id_cliente int primary key auto_increment,
     fk_id_pessoa int,
@@ -42,16 +29,7 @@ create table if not exists tb_carro(
     cor varchar(255),
     status boolean,
     ano_fabricacao year,
-    nome varchar(255),
-    fk_id_modelo int,
-    foreign key (fk_id_modelo) references tb_modelo_carro(id_modelo_carro)
-);
-
-create table if not exists tb_cnh_cliente(
-    id_cnh int primary key auto_increment,
-    categoria varchar(5) not null,
-    fk_id_cliente int,
-    foreign key (fk_id_cliente) references tb_cliente(id_cliente)
+    nome varchar(255)
 );
 
 create table if not exists tb_contrato(
@@ -60,7 +38,9 @@ create table if not exists tb_contrato(
     data_fim date,
     valor_total decimal(10, 2),
     fk_id_cliente int,
-    foreign key (fk_id_cliente) references tb_cliente(id_cliente)
+    fk_id_carro int,
+    foreign key (fk_id_cliente) references tb_cliente(id_cliente),
+    foreign key (fk_id_carro) references tb_carro(id_carro)
 );
 
 create table if not exists tb_funcionario(
@@ -72,14 +52,4 @@ create table if not exists tb_funcionario(
     fk_id_contrato int,
     foreign key (fk_id_pessoa) references tb_pessoa(id_pessoa),
     foreign key (fk_id_contrato) references tb_contrato(id_contrato)
-);
-
-create table if not exists tb_cobertura(
-    id_cobertura int primary key auto_increment,
-    fk_id_contrato int,
-    fk_id_carro int,
-    fk_id_seguradora int,
-    foreign key (fk_id_contrato) references tb_contrato(id_contrato),
-    foreign key (fk_id_carro) references tb_carro(id_carro),
-    foreign key (fk_id_seguradora) references tb_seguradora(id_seguradora)
 );
