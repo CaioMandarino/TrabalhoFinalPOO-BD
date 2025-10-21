@@ -71,9 +71,9 @@ public class ContratoCLIView {
         }
 
 
-        String dataInicio = pedirObrigatorio("Data Início: ");
+        String dataInicio = pedirObrigatorio("Data Início (yyyy-mm-dd):  ");
         String dataFim = pedirOpcional("Data Fim (opcional): ");
-        Float valor = pedirValorFloatOpcional("Valor total (opcional");
+        Float valor = pedirValorFloatOpcional("Valor total (opcional): ");
 
         controleContratos.criarContrato(cliente, carro, dataInicio, dataFim, valor);
         System.out.println("Contrato criado com sucesso.");
@@ -115,8 +115,8 @@ public class ContratoCLIView {
         }
 
 
-        String dataInicio = pedirObrigatorio("Nova Data Início : ");
-        String dataFim = pedirOpcional("Nova Data Fim : ");
+        String dataInicio = pedirObrigatorio("Nova Data Início (yyyy-mm-dd): ");
+        String dataFim = pedirOpcional("Nova Data Fim (yyyy-mm-dd): ");
         Float valor = pedirValorFloatOpcional("Novo Valor total: ");
 
         controleContratos.atualizarContrato(idContrato, cliente, carro, dataInicio, dataFim, valor);
