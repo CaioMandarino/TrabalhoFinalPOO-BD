@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Digite a senha do bando de dados: ");
+        System.out.println("Digite a senha do banco de dados: ");
         String senha = scanner.nextLine();
 
         try {
@@ -22,11 +22,43 @@ public class Main {
             ClientesCLIView clientesView = new ClientesCLIView(controleClientes, scanner);
             CarrosCLIView carrosCLIView = new CarrosCLIView(controleCarro, scanner);
             ContratoCLIView contratoCLIView = new ContratoCLIView(controleContratos, controleClientes, controleCarro, scanner);
+            String escolha = "";
+            do{
+                System.out.println("\n--- Menu Principal ---");
+                System.out.println("1 - Clientes");
+                System.out.println("2 - Funcionarios");
+                System.out.println("3 - Carros");
+                System.out.println("4 - Contratos");
+                System.out.println("S - Sair");
+                System.out.print("Escolha uma opção: ");
+
+                escolha = scanner.nextLine();
+
+                switch (escolha){
+                    case "1":
+                        clientesView.rodar();
+                        break;
+                    case "2":
+                        System.out.println("Parte que falta");
+                        break;
+                    case "3":
+                        carrosCLIView.rodar();
+                        break;
+                    case "4":
+                        contratoCLIView.rodar();
+                        break;
+                    case "S": break;
+
+                    default:
+                        System.out.println("Opção inválida. Tente novamente.");
+
+                }
+            }
+
+            while (!escolha.equalsIgnoreCase("s"));
+                scanner.close();
 
             // A Fazer, criar um menu para as Views
-            clientesView.rodar();
-            carrosCLIView.rodar();
-            contratoCLIView.rodar();
 
         } catch (SQLException error) {
             System.out.println("Falha ao se conectar com banco de dados " + error);
