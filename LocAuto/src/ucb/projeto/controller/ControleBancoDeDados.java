@@ -17,7 +17,7 @@ public class ControleBancoDeDados {
     }
 
     // Retorna o resultado da query do SQL
-    public ResultSet executarCusultaBD(String sql) throws SQLException {
+    public ResultSet executarConsultaBD(String sql) throws SQLException {
         PreparedStatement statement = conexao.prepareStatement(sql);
         return statement.executeQuery();
     }
