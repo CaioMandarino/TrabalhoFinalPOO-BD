@@ -5,7 +5,7 @@ public class Carro {
     private String placa;
     private float Quilometragem;
     private String Cor;
-    private String Status;
+    private Boolean Status;
     private int AnoFabricacao;
     private String Nome;
 
@@ -41,11 +41,11 @@ public class Carro {
         Cor = cor;
     }
 
-    public String getStatus() {
+    public Boolean getStatus() {
         return Status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Boolean status) {
         Status = status;
     }
 
@@ -65,7 +65,7 @@ public class Carro {
         Nome = nome;
     }
 
-    public Carro(int id_Carro, String placa, float quilometragem, String cor, String status, int anoFabricacao, String nome) {
+    public Carro(int id_Carro, String placa, float quilometragem, String cor, Boolean status, int anoFabricacao, String nome) {
         Id_Carro = id_Carro;
         this.placa = placa;
         Quilometragem = quilometragem;

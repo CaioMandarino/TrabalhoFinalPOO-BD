@@ -1,6 +1,7 @@
 package ucb.projeto.view;
 
 import ucb.projeto.controller.ControleBancoDeDados;
+import ucb.projeto.controller.ControleCarro;
 import ucb.projeto.controller.ControleClientes;
 
 import java.sql.SQLException;
@@ -15,8 +16,12 @@ public class Main {
         try {
             ControleBancoDeDados controlerDB = new ControleBancoDeDados(senha);
             ControleClientes controleClientes = new ControleClientes(controlerDB);
+            ControleCarro controleCarro = new ControleCarro(senha);
             ClientesCLIView clientesView = new ClientesCLIView(controleClientes, scanner);
-            clientesView.rodar();
+            CarrosCLIView carrosCLIView = new CarrosCLIView(controleCarro, scanner);
+
+//            clientesView.rodar();
+            carrosCLIView.rodar();
 
         } catch (SQLException error) {
             System.out.println("Falha ao se conectar com banco de dados " + error);

@@ -4,6 +4,7 @@ import ucb.projeto.controller.ControleCarro;
 import ucb.projeto.model.Carro;
 
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -57,14 +58,12 @@ public class CarrosCLIView {
         String placa = pedirObrigatorio("Placa: ");
         float quilometragem = pedirFloat("Quilometragem: ");
         String cor = pedirObrigatorio("Cor: ");
-        String status = pedirObrigatorio("Status: ");
+        Boolean status = pedirBooleano("Status: ");
         int anoFabricacao = pedirInteiro("Ano de fabricação: ");
         String nome = pedirObrigatorio("Nome (modelo): ");
 
         Carro carro = new Carro(0, placa, quilometragem, cor, status, anoFabricacao, nome);
         controle.adicionarCarro(carro);
-
-        System.out.println("Carro adicionado com sucesso.");
     }
 
     private void buscarPorId() throws SQLException {
@@ -98,21 +97,18 @@ public class CarrosCLIView {
         String novaPlaca = pedirObrigatorio("Nova placa: ");
         float novaQuilometragem = pedirFloat("Nova quilometragem: ");
         String novaCor = pedirObrigatorio("Nova cor: ");
-        String novoStatus = pedirObrigatorio("Novo status: ");
+        Boolean novoStatus = pedirBooleano("Novo status: ");
         int novoAno = pedirInteiro("Novo ano de fabricação: ");
         String novoNome = pedirObrigatorio("Novo nome/modelo: ");
 
         Carro carro = new Carro(id, novaPlaca, novaQuilometragem, novaCor, novoStatus, novoAno, novoNome);
         controle.atualizarCarro(carro);
-
-        System.out.println("Carro atualizado com sucesso.");
     }
 
     private void deletarPorId() throws SQLException {
         System.out.println("\n== Deletar carro por ID ==");
         int id = pedirInteiro("ID do carro: ");
         controle.excluirCarro(id);
-        System.out.println("Carro deletado com sucesso.");
     }
 
     private void listarTodos() throws SQLException {
@@ -147,6 +143,20 @@ public class CarrosCLIView {
                 return Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException error) {
                 System.out.println("Digite um número inteiro válido.");
+            }
+        }
+    }
+
+    private Boolean pedirBooleano(String label) {
+        while (true) {
+            System.out.print(label);
+            try {
+                Boolean valor = scanner.nextBoolean();
+                scanner.nextLine();
+                return valor;
+            } catch (InputMismatchException e) {
+                System.out.println("Digite um booleano válido (true/false).");
+                scanner.nextLine();
             }
         }
     }
