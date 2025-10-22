@@ -3,6 +3,7 @@ package ucb.projeto.view;
 import ucb.projeto.controller.ControleBancoDeDados;
 import ucb.projeto.controller.ControleCarro;
 import ucb.projeto.controller.ControleClientes;
+import ucb.projeto.controller.ControleFuncionario;
 import ucb.projeto.controller.ControleContratos;
 
 import java.sql.SQLException;
@@ -14,11 +15,14 @@ public class Main {
         System.out.println("Digite a senha do banco de dados: ");
         String senha = scanner.nextLine();
 
+        ControleBancoDeDados controlerDB;
         try {
-            ControleBancoDeDados controlerDB = new ControleBancoDeDados(senha);
+            controlerDB = new ControleBancoDeDados(senha);
             ControleClientes controleClientes = new ControleClientes(controlerDB);
+            ControleFuncionario controlfunc = new ControleFuncionario(controlerDB);
             ControleCarro controleCarro = new ControleCarro(senha);
             ControleContratos controleContratos = new ControleContratos(controlerDB);
+            FuncionariosCLIView funcionarioView = new FuncionariosCLIView( controlfunc , scanner);
             ClientesCLIView clientesView = new ClientesCLIView(controleClientes, scanner);
             CarrosCLIView carrosCLIView = new CarrosCLIView(controleCarro, scanner);
             ContratoCLIView contratoCLIView = new ContratoCLIView(controleContratos, controleClientes, controleCarro, scanner);
@@ -39,7 +43,7 @@ public class Main {
                         clientesView.rodar();
                         break;
                     case "2":
-                        System.out.println("Parte que falta");
+                        funcionarioView.menu();
                         break;
                     case "3":
                         carrosCLIView.rodar();
@@ -58,11 +62,12 @@ public class Main {
             while (!escolha.equalsIgnoreCase("s"));
                 scanner.close();
 
-            // A Fazer, criar um menu para as Views
 
         } catch (SQLException error) {
             System.out.println("Falha ao se conectar com banco de dados " + error);
             throw new RuntimeException(error);
         }
+
+
     }
 }
