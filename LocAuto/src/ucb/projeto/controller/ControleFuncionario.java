@@ -86,77 +86,165 @@ public class ControleFuncionario extends ControlePessoa {
                 fkContratoSQL,
                 sqlValorValido(cpf)
         );
+
         controleBancoDeDados.executarAtualizacaoBD(sql);
     }
 
     public void deletarFuncionarioPorCPF(String cpf) throws SQLException {
-        String sql = String.format(
+        String deletarFuncionarioSQL = String.format(
                 "DELETE f FROM tb_funcionario f " +
                         "JOIN tb_pessoa p ON p.ID_Pessoa = f.fk_id_pessoa " +
                         "WHERE p.CPF = %s;",
                 sqlValorValido(cpf)
         );
-        controleBancoDeDados.executarAtualizacaoBD(sql);
+
+        String deletarPessoaSQL = String.format(
+                "DELETE FROM tb_Pessoa WHERE CPF = %s;",
+                sqlValorValido(cpf)
+        );
+
+        int numeroLinhas = controleBancoDeDados.executarAtualizacaoBD(deletarFuncionarioSQL);
+        int numeroLinhos = controleBancoDeDados.executarAtualizacaoBD(deletarPessoaSQL);
+
+        if (numeroLinhas > 0) {
+            System.out.println("Funcionario deletado com sucesso!");
+        }
     }
 
     public ArrayList<Funcionario> listarFuncionarios() throws SQLException {
         String sql = """
             SELECT
+                id_funcionarios,
                 f.data_admissao,
                 f.cargo,
                 f.salario,
+                f.fk_id_contrato,
                 p.ID_Pessoa,
                 p.CPF,
                 p.Nome,
-                p.data_nasc,
-                p.
+                p.Data_nasc,
+                p.CEP,
+                p.Municipio,
+                p.UF,
+                p.Complemento,
+                p.Email,
+                p.Telefone1,
+                p.Telefone2,
                 c.id_contrato
             FROM tb_funcionario f
             JOIN tb_pessoa p   ON p.ID_Pessoa   = f.fk_id_pessoa
             LEFT JOIN tb_contrato c ON c.id_contrato = f.fk_id_contrato;
             """;
-            ResultSet resultado = controleBancoDeDados.executarCusultaBD(sql);
-            ArrayList <Funcionario> funcionarios = new ArrayList<Funcionario>();
 
-            if(!resultado.next()){
-                return funcionarios;
-            }
-                int id_funcionario = resultado.getInt("id_funcionarios");
-                Date data_admissao = resultado.getDate("data_dmissao");
-                String cargo = resultado.getString("cargo");
-                salario = resultado.getInt("salario");
-                fk_id_contrato = resultado.getInt("fk_id_contrato");
-                ID_Pessoa = resultado.getInt("ID_Pessoa");
-                CPF = resultado.getInt("CPF");
-                Nome = resultado.getInt("Nome");
+        ResultSet resultado = controleBancoDeDados.executarCusultaBD(sql);
+        ArrayList <Funcionario> funcionarios = new ArrayList<Funcionario>();
 
+        if(!resultado.next()){
+            return funcionarios;
+        }
+
+        do {
+            Integer id_funcionario = resultado.getInt("id_funcionarios");
+            Date data_admissao = resultado.getDate("data_admissao");
+            String cargo = resultado.getString("cargo");
+            Float salario = resultado.getFloat("salario");
+            Integer fk_id_contrato = resultado.getInt("fk_id_contrato");
+            Integer id_pessoa = resultado.getInt("ID_Pessoa");
+            String cpf    = resultado.getString("CPF");
+            String nome   = resultado.getString("Nome");
+            Date dataNascimento = resultado.getDate("Data_nasc");
+            String municipio = resultado.getString("Municipio");
+            String uf        = resultado.getString("UF");
+            String cep       = resultado.getString("CEP");
+            String compl     = resultado.getString("Complemento");
+            String email     = resultado.getString("Email");
+
+            String endereco = String.format("%s/%s, CEP %s%s", municipio, uf, cep, (compl != null && !compl.isBlank() ? " - " + compl : ""));
+
+            Funcionario funcionario = new Funcionario(
+                    id_pessoa,
+                    cpf,
+                    nome,
+                    dataNascimento,
+                    endereco,
+                    email,
+                    fk_id_contrato,
+                    salario,
+                    cargo,
+                    data_admissao,
+                    id_funcionario);
+
+            funcionarios.add(funcionario);
+        } while (resultado.next());
 
         return funcionarios;
     }
 
-    public ResultSet buscarFuncionarioPorCPF(String cpf) throws SQLException {
+    public Funcionario buscarFuncionarioPorCPF(String cpf) throws SQLException {
         String sql = String.format("""
             SELECT
                 f.id_funcionarios,
                 f.data_admissao,
                 f.cargo,
                 f.salario,
-                f.fk_id_pessoa,
                 f.fk_id_contrato,
                 p.ID_Pessoa,
                 p.CPF,
                 p.Nome,
-                c.id_contrato,
-                c.data_inicio,
-                c.data_fim,
-                c.valor_total
+                p.Data_nasc,
+                p.CEP,
+                p.Municipio,
+                p.UF,
+                p.Complemento,
+                p.Email,
+                p.Telefone1,
+                p.Telefone2,
+                c.id_contrato
             FROM tb_funcionario f
             JOIN tb_pessoa p   ON p.ID_Pessoa   = f.fk_id_pessoa
             LEFT JOIN tb_contrato c ON c.id_contrato = f.fk_id_contrato
             WHERE p.CPF = %s
             LIMIT 1;
             """, sqlValorValido(cpf));
-        return controleBancoDeDados.executarCusultaBD(sql);
+
+        ResultSet resultado = controleBancoDeDados.executarCusultaBD(sql);
+
+        if(!resultado.next()){
+            return null;
+        }
+
+        Integer id_funcionario = resultado.getInt("id_funcionarios");
+        Date data_admissao = resultado.getDate("data_admissao");
+        String cargo = resultado.getString("cargo");
+        Float salario = resultado.getFloat("salario");
+        Integer fk_id_contrato = resultado.getInt("fk_id_contrato");
+        Integer id_pessoa = resultado.getInt("ID_Pessoa");
+        String nome   = resultado.getString("Nome");
+        Date dataNascimento = resultado.getDate("Data_nasc");
+        String municipio = resultado.getString("Municipio");
+        String uf        = resultado.getString("UF");
+        String cep       = resultado.getString("CEP");
+        String compl     = resultado.getString("Complemento");
+        String email     = resultado.getString("Email");
+
+        String endereco = String.format("%s/%s, CEP %s%s", municipio, uf, cep, (compl != null && !compl.isBlank() ? " - " + compl : ""));
+
+        Funcionario funcionario = new Funcionario(
+                id_pessoa,
+                cpf,
+                nome,
+                dataNascimento,
+                endereco,
+                email,
+                fk_id_contrato,
+                salario,
+                cargo,
+                data_admissao,
+                id_funcionario);
+
+        resultado.close();
+
+        return  funcionario;
     }
 }
 

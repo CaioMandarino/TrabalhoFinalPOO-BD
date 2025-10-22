@@ -17,16 +17,17 @@ public class Main {
         try {
             controlerDB = new ControleBancoDeDados(senha);
             ControleClientes controleClientes = new ControleClientes(controlerDB);
+            ControleFuncionario controlfunc = new ControleFuncionario(controlerDB);
             ClientesCLIView clientesView = new ClientesCLIView(controleClientes, scanner);
-            clientesView.rodar();
+            FuncionariosCLIView func = new FuncionariosCLIView( controlfunc , scanner);
+
+            func.menu();
 
         } catch (SQLException error) {
             System.out.println("Falha ao se conectar com banco de dados " + error);
             throw new RuntimeException(error);
         }
 
-        ControleFuncionario controlfunc = new ControleFuncionario(controlerDB);
-        FuncionariosCLIView func = new FuncionariosCLIView( controlfunc , scanner);
-        func.menu();
+
     }
 }

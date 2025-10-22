@@ -2,15 +2,19 @@ package ucb.projeto.model;
 import java.util.Date;
 
 public class Funcionario extends Pessoa {
-    private  int id_funcionario;
-    private Date Data_Admissao;
-    private String Cargo;
-    float Salario;
+    private int id_funcionario;
+    private Date data_Admissao;
+    private String cargo;
+    private float salario;
+    private int id_contrato;
 
-
-    public Funcionario(int id, String CPF, String nome, Date data_nascimento, String endereco, String email) {
+    public Funcionario(int id, String CPF, String nome, Date data_nascimento, String endereco, String email, int id_contrato, float salario, String cargo, Date data_Admissao, int id_funcionario) {
         super(id, CPF, nome, data_nascimento, endereco, email);
-
+        this.id_contrato = id_contrato;
+        this.salario = salario;
+        this.cargo = cargo;
+        this.data_Admissao = data_Admissao;
+        this.id_funcionario = id_funcionario;
     }
 
     public int getId_funcionario() {
@@ -22,34 +26,34 @@ public class Funcionario extends Pessoa {
     }
 
     public Date getData_Admissao() {
-        return Data_Admissao;
+        return data_Admissao;
     }
 
     public void setData_Admissao(Date data_Admissao) {
-        Data_Admissao = data_Admissao;
+        this.data_Admissao = data_Admissao;
     }
 
     public String getCargo() {
-        return Cargo;
+        return cargo;
     }
 
     public void setCargo(String cargo) {
-        Cargo = cargo;
+        this.cargo = cargo;
     }
 
     public float getSalario() {
-        return Salario;
+        return salario;
     }
 
     public void setSalario(float salario) {
-        Salario = salario;
+        this.salario = salario;
     }
 
-    public Funcionario(int id, String CPF, String nome, Date data_nascimento, String endereco, String email, int id_funcionario, Date data_Admissao, String cargo, float salario) {
-        super(id, CPF, nome, data_nascimento, endereco, email);
-        this.id_funcionario = id_funcionario;
-        Data_Admissao = data_Admissao;
-        Cargo = cargo;
-        Salario = salario;
+    public int getId_contrato() {
+        return id_contrato;
+    }
+
+    public void setId_contrato(int id_contrato) {
+        this.id_contrato = id_contrato;
     }
 };

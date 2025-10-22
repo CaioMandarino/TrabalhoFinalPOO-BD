@@ -135,9 +135,9 @@ public class ClientesCLIView {
         return (valor == null || valor.isBlank()) ? null : valor;
     }
 
-    private String pedirObrigatorio(String label) {
+    private String pedirObrigatorio(String msg) {
         while (true) {
-            System.out.print(label);
+            System.out.print(msg);
             String valor = scanner.nextLine();
             if (valor != null && !valor.isBlank()) {
                 return valor;
@@ -146,8 +146,8 @@ public class ClientesCLIView {
         }
     }
 
-    private String pedirOpcional(String label) {
-        System.out.print(label);
+    private String pedirOpcional(String msg) {
+        System.out.print(msg);
         String valor = scanner.nextLine();
         return (valor == null || valor.isBlank()) ? null : valor;
     }

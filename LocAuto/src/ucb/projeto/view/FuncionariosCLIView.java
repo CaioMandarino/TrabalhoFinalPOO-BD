@@ -7,6 +7,7 @@ import ucb.projeto.controller.ControleFuncionario;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -56,18 +57,21 @@ public class FuncionariosCLIView {
         System.out.println("===Criar funcionario===");
         String CPF = lerItemOpc("CPF: ");
         String Nome = lerItemOpc("Nome:");
-        String Dt_nasc = lerItemOpc("Data de nascimento:");
-        String Cep = lerItemOpc("Cep");
-        String Munic = lerItemOpc("Municipio");
-        String Uf = lerItemOpc("Uf");
-        String Compl = lerItemOpc("Complemento:");
-        String Email = lerItemOpc("email:");
-        String tel1 = lerItemOpc("telefone1:");
+        String Dt_nasc = lerItemOpc("Data de nascimento (yyyy-mm-dd): ");
+        String Cep = lerItemOpc("Cep: ");
+        String Munic = lerItemOpc("Municipio: ");
+        String Uf = lerItemOpc("Uf: ");
+        String Compl = lerItemOpc("Complemento: ");
+        String Email = lerItemOpc("email: ");
+        String tel1 = lerItemOpc("telefone1: ");
         String tel2 = lerItemOpc("telefone2:");
-        String dt_adms = lerItemObg("Data_admissão(obrifatorio):");
+        String dt_adms = lerItemObg("Data_admissão(obrigatorio):");
         String Cargo = lerItemObg("Cargo:");
         Double Salario = Double.parseDouble(lerItemObg("Salario(obrigatorio):"));
-        //controleF.inserirFuncionario(CPF , Nome , Dt_nasc , Cep , Munic , Uf , Compl , Email , tel1 , tel2 , dt_adms , Cargo , Salario, );
+        Integer idContrato = lerIntObg("Digite o id do contrato que ele é responsável:(obrigatorio) ");
+
+        // colocar o criado com sucesso e oq é opcional
+        controleF.inserirFuncionario(CPF , Nome , Dt_nasc , Cep , Munic , Uf , Compl , Email , tel1 , tel2 , dt_adms , Cargo , Salario, idContrato);
     }
     private void autalFuncCPF() throws SQLException {
         System.out.println("===Atualizar Funcionario pelo CPF===");
@@ -90,73 +94,57 @@ public class FuncionariosCLIView {
         System.out.println("\nCliente atualizado.");
     }
     private void delFuncCPF() throws SQLException{
+        System.out.println("===Atualizar Funcionario pelo CPF===");
+        String cpf = lerItemObg("CPF: ");
 
+        controleF.deletarFuncionarioPorCPF(cpf);
     }
     private void mostrarFuncs() throws SQLException{
         System.out.println("\n===Lista de funcionarios===");
-        //ResultSet resultado = controleF.listarFuncionarios();
-        ArrayList<Funcionario> funcionarios = new ArrayList<>();
+        ArrayList<Funcionario> funcionarios = controleF.listarFuncionarios();
 
-        if(!resultado.next()){
-            System.out.println("\nA lista esta vazia.");
+        if(funcionarios.isEmpty()){
+            System.out.println("\nA lista está vazia.");
             return;
         }
 
-        do{
-            System.out.println(
-                    "-_-_-_-_-_-_-_-_-_-_"+
-                    "ID_funcionario:"+ resultado.getInt("id_funcionarios")+
-                    "CPF: " + resultado.getString("cpf")+
-                    "Nome: " + resultado.getString("nome")+
-                    "Data de Nascimento: " + resultado.getDate("data_nasc")+
-                    "Cep: " + resultado.getString("cep")+
-                    "Munic: " + resultado.getString("municipio")+
-                    "Uf: " + resultado.getString("uf")+
-                    "Complemento: " + resultado.getString("complemento")+
-                    " Email: " + resultado.getString("email")+
-                    " telefone 1: " + resultado.getDouble("telefone1")+
-                    "telefone 2: " + resultado.getDouble("telefone2")+
-                    "Data-admissão: "+resultado.getDate("data_admissao")+
-                    "Cargo: "+resultado.getString("cargo")+
-                    "Salario: "+resultado.getDouble("salario")+
-                    "Fk_id_pessoa: "+resultado.getInt("fk_id_pessoa")+
-                    "Fk_id_contrato: "+resultado.getInt("fk_id_contrato")+
-                    "-_-_-_-_-_-_-_-_-_-_"
-            );
-        }while(resultado.next());
+        for (Funcionario funcionario : funcionarios) {
+            System.out.println("id_funcionario: " + funcionario.getId_funcionario());
+            System.out.println("data_Admissao: " + funcionario.getData_Admissao());
+            System.out.println("cargo: " + funcionario.getCargo());
+            System.out.println("salario: " + funcionario.getSalario());
+            System.out.println("id_contrato: " + funcionario.getId_contrato());
 
+            System.out.println("Id: " + funcionario.getId());
+            System.out.println("CPF: " + funcionario.getCPF());
+            System.out.println("Nome: " + funcionario.getNome());
+            System.out.println("Data_nascimento: " + funcionario.getData_nascimento());
+            System.out.println("Endereco: " + funcionario.getEndereco());
+            System.out.println("Email: " + funcionario.getEmail());
+        }
     }
     private void buscarFuncCPF() throws SQLException{
         System.out.println("===Buscar funcionario pelo CPF===");
-        String CPF = lerItemObg("CPF");
-        ResultSet resultado = controleF.buscarFuncionarioPorCPF(CPF);
+        String CPF = lerItemObg("CPF: ");
+        Funcionario funcionario = controleF.buscarFuncionarioPorCPF(CPF);
 
-        if( !resultado.next()){
-            System.out.println("Nenhum funcionario foi encontrado para o CPF : " + CPF);
+        if(funcionario == null){
+            System.out.println("Nenhum funcionario foi encontrado para o CPF: " + CPF);
             return;
         }
-        System.out.println(
-                "-_-_-_-_-_-_-_-_-_-_"+
-                "ID_funcionario:"+ resultado.getInt("id_funcionarios")+
-                "CPF: " + resultado.getString("cpf")+
-                "Nome: " + resultado.getString("nome")+
-                "Data de Nascimento: " + resultado.getDate("data_nasc")+
-                "Cep: " + resultado.getString("cep")+
-                "Munic: " + resultado.getString("municipio")+
-                "Uf: " + resultado.getString("uf")+
-                "Complemento: " + resultado.getString("complemento")+
-                " Email: " + resultado.getString("email")+
-                " telefone 1: " + resultado.getDouble("telefone1")+
-                "telefone 2: " + resultado.getDouble("telefone2")+
-                "Data-admissão: "+resultado.getDate("data_admissao")+
-                "Cargo: "+resultado.getString("cargo")+
-                "Salario: "+resultado.getDouble("salario")+
-                "Fk_id_pessoa: "+resultado.getInt("fk_id_pessoa")+
-                "Fk_id_contrato: "+resultado.getInt("fk_id_contrato")+
-                "-_-_-_-_-_-_-_-_-_-_"
-        );
-        resultado.close();
 
+        System.out.println("id_funcionario: " + funcionario.getId_funcionario());
+        System.out.println("data_Admissao: " + funcionario.getData_Admissao());
+        System.out.println("cargo: " + funcionario.getCargo());
+        System.out.println("salario: " + funcionario.getSalario());
+        System.out.println("id_contrato: " + funcionario.getId_contrato());
+
+        System.out.println("Id: " + funcionario.getId());
+        System.out.println("CPF: " + funcionario.getCPF());
+        System.out.println("Nome: " + funcionario.getNome());
+        System.out.println("Data_nascimento: " + funcionario.getData_nascimento());
+        System.out.println("Endereco: " + funcionario.getEndereco());
+        System.out.println("Email: " + funcionario.getEmail());
     }
 
 
@@ -167,15 +155,29 @@ public class FuncionariosCLIView {
     }
 
     private String lerItemObg( String msg){
-
-        String valor;
-        while(true) {
-            System.out.println(msg);
-            valor = scanner.nextLine();
-            if( valor != null && !(valor.isBlank()) ){
+        while (true) {
+            System.out.print(msg);
+            String valor = scanner.nextLine();
+            if (valor != null && !valor.isBlank()) {
                 return valor;
             }
-            System.out.println("Este valor é obrigatorio.");
+            System.out.println("Valor obrigatório.");
         }
     }
+
+    private int lerIntObg(String msg) {
+        while (true) {
+            System.out.print(msg + " ");
+            try {
+                int valor = scanner.nextInt();
+                scanner.nextLine();
+                return valor;
+            } catch (InputMismatchException e) {
+                System.out.println("Digite um número inteiro válido.");
+                scanner.nextLine();
+            }
+        }
+    }
+
+
 }
