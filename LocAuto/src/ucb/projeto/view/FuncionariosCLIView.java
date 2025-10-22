@@ -55,49 +55,52 @@ public class FuncionariosCLIView {
 
     private void criarFunc() throws SQLException{
         System.out.println("===Criar funcionario===");
-        String CPF = lerItemOpc("CPF: ");
-        String Nome = lerItemOpc("Nome:");
-        String Dt_nasc = lerItemOpc("Data de nascimento (yyyy-mm-dd): ");
-        String Cep = lerItemOpc("Cep: ");
-        String Munic = lerItemOpc("Municipio: ");
-        String Uf = lerItemOpc("Uf: ");
-        String Compl = lerItemOpc("Complemento: ");
-        String Email = lerItemOpc("email: ");
-        String tel1 = lerItemOpc("telefone1: ");
-        String tel2 = lerItemOpc("telefone2:");
-        String dt_adms = lerItemObg("Data_admissão(obrigatorio):");
-        String Cargo = lerItemObg("Cargo:");
-        Double Salario = Double.parseDouble(lerItemObg("Salario(obrigatorio):"));
-        Integer idContrato = lerIntObg("Digite o id do contrato que ele é responsável:(obrigatorio) ");
+        String CPF = lerItemObg("CPF : ");
+        String Nome = lerItemOpc("Nome (opcional):");
+        String Dt_nasc = lerItemOpc("Data de nascimento (yyyy-mm-dd)(opcional): ");
+        String Cep = lerItemOpc("Cep (opcional): ");
+        String Munic = lerItemOpc("Municipio (opcional): ");
+        String Uf = lerItemOpc("Uf (opcional): ");
+        String Compl = lerItemOpc("Complemento (opcional): ");
+        String Email = lerItemOpc("email (opcional): ");
+        String tel1 = lerItemOpc("telefone1 (opcional): ");
+        String tel2 = lerItemOpc("telefone2 (opcional): ");
+        String dt_adms = lerItemObg("Data_admissão : ");
+        String Cargo = lerItemObg("Cargo : ");
+        Double Salario = Double.parseDouble(lerItemObg("Salario : "));
+        Integer idContrato = lerIntObg("Digite o id do contrato que ele é responsável: ");
 
-        // colocar o criado com sucesso e oq é opcional
+        System.out.println("Funcionario criado com sucesso!");
+        System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-");
         controleF.inserirFuncionario(CPF , Nome , Dt_nasc , Cep , Munic , Uf , Compl , Email , tel1 , tel2 , dt_adms , Cargo , Salario, idContrato);
     }
     private void autalFuncCPF() throws SQLException {
         System.out.println("===Atualizar Funcionario pelo CPF===");
         String CPF = lerItemObg("CPF: ");
-        String Nome = lerItemOpc("Nome: ");
-        String Dt_nasc = lerItemOpc("Data de nascimento: ");
-        String Cep = lerItemOpc("Cep: ");
-        String Munic = lerItemOpc("Municipio: ");
-        String Uf = lerItemOpc("UF: ");
-        String Compl = lerItemOpc("Complemento: ");
-        String Email = lerItemOpc("Email: ");
-        String Tel1 = lerItemOpc("Telefone1: ");
-        String Tel2 = lerItemOpc("Telefone2: ");
-        String Dt_admis = lerItemOpc("Data_admissão: ");
-        String Cargo = lerItemOpc("Cargo: ");
-        Double Salario = Double.parseDouble(lerItemOpc("Salario: "));
+        String Nome = lerItemOpc("Nome (opcional): ");
+        String Dt_nasc = lerItemOpc("Data de nascimento (opcional): ");
+        String Cep = lerItemOpc("Cep (opcional): ");
+        String Munic = lerItemOpc("Municipio (opcional): ");
+        String Uf = lerItemOpc("UF (opcional): ");
+        String Compl = lerItemOpc("Complemento (opcional): ");
+        String Email = lerItemOpc("Email (opcional): ");
+        String Tel1 = lerItemOpc("Telefone1 (opcional): ");
+        String Tel2 = lerItemOpc("Telefone2 (opcional): ");
+        String Dt_admis = lerItemObg("Data_admissão: ");
+        String Cargo = lerItemObg("Cargo: ");
+        Double Salario = Double.parseDouble(lerItemObg("Salario: "));
 
         controleF.atualizarFuncionarioPorCPF(CPF , Dt_nasc , Cargo  ,Salario , null );
 
-        System.out.println("\nCliente atualizado.");
+        System.out.println("\nFUncionário atualizado.");
+        System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-");
     }
     private void delFuncCPF() throws SQLException{
         System.out.println("===Atualizar Funcionario pelo CPF===");
         String cpf = lerItemObg("CPF: ");
 
         controleF.deletarFuncionarioPorCPF(cpf);
+        System.out.println("FUncionario deletado comsucesso!");
     }
     private void mostrarFuncs() throws SQLException{
         System.out.println("\n===Lista de funcionarios===");
@@ -105,10 +108,13 @@ public class FuncionariosCLIView {
 
         if(funcionarios.isEmpty()){
             System.out.println("\nA lista está vazia.");
+            System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-");
+
             return;
         }
 
         for (Funcionario funcionario : funcionarios) {
+            System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-");
             System.out.println("id_funcionario: " + funcionario.getId_funcionario());
             System.out.println("data_Admissao: " + funcionario.getData_Admissao());
             System.out.println("cargo: " + funcionario.getCargo());
@@ -122,6 +128,7 @@ public class FuncionariosCLIView {
             System.out.println("Endereco: " + funcionario.getEndereco());
             System.out.println("Email: " + funcionario.getEmail());
         }
+        System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-");
     }
     private void buscarFuncCPF() throws SQLException{
         System.out.println("===Buscar funcionario pelo CPF===");
@@ -132,7 +139,7 @@ public class FuncionariosCLIView {
             System.out.println("Nenhum funcionario foi encontrado para o CPF: " + CPF);
             return;
         }
-
+        System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-");
         System.out.println("id_funcionario: " + funcionario.getId_funcionario());
         System.out.println("data_Admissao: " + funcionario.getData_Admissao());
         System.out.println("cargo: " + funcionario.getCargo());
@@ -145,6 +152,7 @@ public class FuncionariosCLIView {
         System.out.println("Data_nascimento: " + funcionario.getData_nascimento());
         System.out.println("Endereco: " + funcionario.getEndereco());
         System.out.println("Email: " + funcionario.getEmail());
+        System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-");
     }
 
 
