@@ -1,8 +1,12 @@
 package ucb.projeto.controller;
 
+import ucb.projeto.model.Funcionario;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Locale;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class ControleFuncionario extends ControlePessoa {
 
@@ -95,28 +99,39 @@ public class ControleFuncionario extends ControlePessoa {
         controleBancoDeDados.executarAtualizacaoBD(sql);
     }
 
-    public ResultSet listarFuncionarios() throws SQLException {
+    public ArrayList<Funcionario> listarFuncionarios() throws SQLException {
         String sql = """
             SELECT
-                f.id_funcionarios,
                 f.data_admissao,
                 f.cargo,
                 f.salario,
-                f.fk_id_pessoa,
-                f.fk_id_contrato,
                 p.ID_Pessoa,
                 p.CPF,
                 p.Nome,
-                c.id_contrato,
-                c.data_inicio,
-                c.data_fim,
-                c.valor_total
+                p.data_nasc,
+                p.
+                c.id_contrato
             FROM tb_funcionario f
             JOIN tb_pessoa p   ON p.ID_Pessoa   = f.fk_id_pessoa
             LEFT JOIN tb_contrato c ON c.id_contrato = f.fk_id_contrato;
             """;
+            ResultSet resultado = controleBancoDeDados.executarCusultaBD(sql);
+            ArrayList <Funcionario> funcionarios = new ArrayList<Funcionario>();
 
-        return controleBancoDeDados.executarCusultaBD(sql);
+            if(!resultado.next()){
+                return funcionarios;
+            }
+                int id_funcionario = resultado.getInt("id_funcionarios");
+                Date data_admissao = resultado.getDate("data_dmissao");
+                String cargo = resultado.getString("cargo");
+                salario = resultado.getInt("salario");
+                fk_id_contrato = resultado.getInt("fk_id_contrato");
+                ID_Pessoa = resultado.getInt("ID_Pessoa");
+                CPF = resultado.getInt("CPF");
+                Nome = resultado.getInt("Nome");
+
+
+        return funcionarios;
     }
 
     public ResultSet buscarFuncionarioPorCPF(String cpf) throws SQLException {
