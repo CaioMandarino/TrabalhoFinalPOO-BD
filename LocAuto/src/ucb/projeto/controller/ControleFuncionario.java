@@ -136,7 +136,7 @@ public class ControleFuncionario extends ControlePessoa {
             LEFT JOIN tb_contrato c ON c.id_contrato = f.fk_id_contrato;
             """;
 
-        ResultSet resultado = controleBancoDeDados.executarCusultaBD(sql);
+        ResultSet resultado = controleBancoDeDados.executarConsultaBD(sql);
         ArrayList <Funcionario> funcionarios = new ArrayList<Funcionario>();
 
         if(!resultado.next()){
@@ -207,7 +207,7 @@ public class ControleFuncionario extends ControlePessoa {
             LIMIT 1;
             """, sqlValorValido(cpf));
 
-        ResultSet resultado = controleBancoDeDados.executarCusultaBD(sql);
+        ResultSet resultado = controleBancoDeDados.executarConsultaBD(sql);
 
         if(!resultado.next()){
             return null;

@@ -52,6 +52,7 @@ public class Main {
                         contratoCLIView.rodar();
                         break;
                     case "S": break;
+                    case "s": break;
 
                     default:
                         System.out.println("Opção inválida. Tente novamente.");
@@ -60,8 +61,8 @@ public class Main {
             }
 
             while (!escolha.equalsIgnoreCase("s"));
-                scanner.close();
-
+            scanner.close();
+            System.out.println("Fechando...");
 
         } catch (SQLException error) {
             System.out.println("Falha ao se conectar com banco de dados " + error);
