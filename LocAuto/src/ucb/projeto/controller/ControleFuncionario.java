@@ -39,7 +39,7 @@ public class ControleFuncionario extends ControlePessoa {
         inserirPessoa(cpf, nome, data_nasc, cep, municipio, uf, complemento, email, telefone1, telefone2);
 
         String sqlBusca = String.format("SELECT ID_Pessoa FROM tb_pessoa WHERE CPF = %s;", sqlValorValido(cpf));
-        ResultSet resultado = controleBancoDeDados.executarCusultaBD(sqlBusca);
+        ResultSet resultado = controleBancoDeDados.executarConsultaBD(sqlBusca);
 
         if (!resultado.next()) {
             System.out.println("Falha ao localizar ID_Pessoa para o CPF " + cpf);

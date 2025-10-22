@@ -53,7 +53,7 @@ public class ControleContratos {
         JOIN tb_pessoa   p ON p.ID_Pessoa   = c.Fk_ID_Pessoa
         JOIN tb_carro    k ON k.id_carro    = t.fk_id_carro;
         """;
-        return controleBancoDeDados.executarCusultaBD(sql);
+        return controleBancoDeDados.executarConsultaBD(sql);
     }
 
     public ResultSet consultarContratosPorCPF(String cpf) throws SQLException {
@@ -78,7 +78,7 @@ public class ControleContratos {
         WHERE p.CPF = %s;
         """, sqlValorValido(cpf));
 
-        return controleBancoDeDados.executarCusultaBD(sql);
+        return controleBancoDeDados.executarConsultaBD(sql);
     }
 
     // UPDATE completo do contrato
